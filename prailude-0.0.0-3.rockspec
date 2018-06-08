@@ -2,10 +2,10 @@
 
 package = "prailude"
 local _version = "0.0.0"
-version = _version .. "-2"
+version = _version .. "-3"
 -- LuaDist source
 source = {
-  tag = "0.0.0-2",
+  tag = "0.0.0-3",
   url = "git://github.com/LuaDist-testing/prailude.git"
 }
 -- Original source
@@ -26,13 +26,15 @@ dependencies = {
   "lua-cjson",
   "alt-getopt",
   "lualogging",
-  "lua-leveldb",
+  "lightningmdb",
+  "lsqlite3",
   "mm"
 }
 build = {
   type = "builtin",
   modules = {
     ["prailude.util"] =          "src/util/prailude_util.lua",
+    ["prailude.util.timer"] =    "src/util/timer.lua",
     ["prailude.util.lowlevel"] = {
       sources = {
         "src/util/prailude_util.c",
@@ -50,6 +52,7 @@ build = {
         "src/util/crypto/argon2/src/core.c",
         "src/util/crypto/argon2/src/encoding.c",
         "src/util/crypto/argon2/src/ref.c",  
+        "src/util/crypto/argon2/src/thread.c",  
         
         --monocypher for blake2b and edDSA-blake2b
         --"src/util/crypto/monocypher.c",
@@ -61,7 +64,8 @@ build = {
       },
       defines = {
         "ED25519_CUSTOMHASH",
-        "ED25519_CUSTOMRNG"
+        "ED25519_CUSTOMRNG",
+        "ARGON2_NO_THREADS"
       },
       incdirs = {
         "src/util/crypto/argon2/include",
@@ -75,6 +79,7 @@ build = {
     ["prailude.control"] =       "src/control.lua",
     ["prailude.config"] =        "src/config.lua",
     ["prailude.bus"] =           "src/bus.lua",
+    ["prailude.rainet"] =        "src/rainet.lua",
     ["prailude.log"] =           "src/log.lua",
     
     ["prailude.message.parser"] = {
